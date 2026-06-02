@@ -260,7 +260,7 @@ resultado de la ejecución de los tests unitarios.
 
 Alumnos:
 
-![img]"alumnos.png"
+![img](alumnos.png "Alumnos")
 
 Horas:
 
