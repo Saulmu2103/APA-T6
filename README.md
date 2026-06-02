@@ -5,7 +5,7 @@
 > [!Important]
 > Introduzca a continuación su nombre y apellidos:
 >
-> Fulano Mengano Zutano
+> Saül Muñoz Rodríguez
 
 ## Aviso Importante
 
@@ -17,7 +17,7 @@
 > eficiente; su uso está prohibido.
 >
 > ¿Quiere saber más?, consulte con el profesorado.
- 
+
 ## Fecha de entrega: 7 de junio a medianoche
 
 ## Tratamiento de ficheros de notas
@@ -258,11 +258,91 @@ Inserte a continuación una captura de pantalla que muestre el resultado de ejec
 fichero `alumno.py` con la opción *verbosa*, de manera que se muestre el
 resultado de la ejecución de los tests unitarios.
 
+Alumnos:
+
+![img]"alumnos.png"
+
+Horas:
+
+
+
 ##### Código desarrollado
 
 Inserte a continuación los códigos fuente desarrollados en esta tarea, usando los
 comandos necesarios para que se realice el realce sintáctico en Python del mismo (no
-vale insertar una imagen o una captura de pantalla, debe hacerse en formato *markdown*).
+vale insertar una imagen o una captura de pantalla, debe hacerse en formato *markdown*
+
+Alumnos:
+
+```python
+import doctest
+import re
+
+def leeAlumnos(ficAlumn):
+    """
+    Lee un fichero de texto con los datos de los alumnos y devuelve un diccionario 
+    en el que la clave es el nombre de cada alumno, el contenido es el objeto Alumno correspondiente.
+    ficAlumn: fichero con los objetos Alumno
+
+    Test unitario:
+
+    >>> alumnos = leeAlumnos('alumnos.txt')
+    >>> for alumno in alumnos:
+    ...     print(alumnos[alumno])
+    ...
+    171     Blanca Agirrebarrenetse 9.5
+    23      Carles Balcell de Lara  4.9
+    68      David Garcia Fuster     7.0
+    """
+
+    alumnos = {}
+    with open(ficAlumn, encoding='utf-8') as f:
+        for linea in f:
+            linea = linea.strip()
+            if not linea:
+                continue
+
+            # 1. Capturar el ID (número entero al principio y el espacio que le sigue)
+            match_id = re.match(r'(\d+)\s+', linea)
+            if not match_id:
+                continue
+            idAlumno = int(match_id.group(1))
+            resto = linea[match_id.end():]   # todo lo que queda después del ID
+
+            # 2. Buscar el primer número (la primera nota) en ese resto
+            match_primer_num = re.search(r'\d+(?:\.\d+)?', resto)
+            if not match_primer_num:
+                continue
+
+            # 3. El nombre es lo que hay antes de ese primer número, quitando espacios al final
+            nombre = resto[:match_primer_num.start()].strip()
+
+            # 4. Capturar TODOS los números (notas) desde esa posición en adelante
+            notas_str = re.findall(r'\d+(?:\.\d+)?', resto[match_primer_num.start():])
+            notas = [float(n) for n in notas_str]
+
+            # 5. Crear el alumno usando argumentos por palabra clave
+            alumno = Alumno(nombre=nombre, numIden=idAlumno, notas=notas)
+            alumnos[nombre] = alumno
+
+    return alumnos
+        
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod(optionflags=doctest.NORMALIZE_WHITESPACE, verbose=True
+```
+
+Horas:
+
+```python
+ds
+```
+
+
+
+
 
 ##### Subida del resultado al repositorio GitHub y *pull-request*
 
